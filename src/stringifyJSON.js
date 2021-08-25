@@ -27,6 +27,26 @@
  */
 function stringifyJSON(obj) {
   // your code goes here
+  if(typeof obj === 'number' || obj === null || typeof obj === 'boolean') return String(obj);
+  if(typeof obj === 'string') return `\"${obj}\"`;
+  if(typeof obj === 'undefined' || typeof obj === 'function') return 'undefined';
+  if(Array.isArray(obj)){
+    let tempArr = [];
+    for (let el of obj){
+      tempArr.push(stringifyJSON(el));
+    } return `[${tempArr}]`
+  }
+  if(typeof obj === 'object' || obj !== null){
+    let str = ''
+    for(let key in obj){
+      if(typeof obj[key] === undefined || typeof obj[key] === 'function') return '{}';
+      let tempKey = stringifyJSON(key);
+      let tempValue = stringifyJSON(obj[key]);
+      str = str + tempKey + ':' + tempValue + ',';
+    }
+    str = str.slice(0,-1);
+    return `{${str}}`;
+  }
 };
 
 // 다음 코드는 결과 제출을 위한 코드입니다. 신경 쓰지 않아도 좋습니다.
